@@ -12,7 +12,6 @@ class MancalaGame(Game):
         self.initial = Mancala(verbose=False)
 
     def actions(self, state):
-        """Return legal pit numbers (1..6) for the player to move."""
         valid = []
         if state.current_player == 1:
             start, end = state.p1_pits_index
@@ -27,7 +26,7 @@ class MancalaGame(Game):
         return valid
 
     def result(self, state, move):
-        """Return a cloned state with the move applied."""
+        """clone state with the move applied."""
         s2 = state.clone()
         s2.play(move)
         return s2
@@ -44,7 +43,6 @@ class MancalaGame(Game):
         return state.winning_eval(check_only=True)
 
     def to_move(self, state):
-        """return the players turn"""
         return state.current_player
 
 def _minimax_value(game: MancalaGame, state: Mancala, depth: int, player: int, maximizing: bool) -> int:
@@ -52,14 +50,14 @@ def _minimax_value(game: MancalaGame, state: Mancala, depth: int, player: int, m
         return game.utility(state, player)
 
     if maximizing:
-        best = -math.inf
+        best = -math.inf # maximize
         for a in game.actions(state):
             val = _minimax_value(game, game.result(state, a), depth - 1, player, False)
             if val > best:
                 best = val
         return best
     else:
-        best = math.inf
+        best = math.inf # minimize
         for a in game.actions(state):
             val = _minimax_value(game, game.result(state, a), depth - 1, player, True)
             if val < best:
@@ -69,13 +67,13 @@ def _minimax_value(game: MancalaGame, state: Mancala, depth: int, player: int, m
 
 def depth_limited_minimax_decision(state: Mancala, depth: int) -> int:
     """
-    runs minimax without pruning and returns the best move for the player
+    runs minimax without pruning and returns the best move for player
     """
     game = MancalaGame()
     player = game.to_move(state)
 
     best_action = None
-    best_val = -math.inf
+    best_val = -math.inf # maximize
 
     for a in game.actions(state):
         val = _minimax_value(game, game.result(state, a), depth - 1, player, False)

@@ -159,8 +159,6 @@ class Mancala:
         """
         empty1 = all(s == 0 for s in self.board[self.p1_pits_index[0]:self.p1_pits_index[1] + 1])
         empty2 = all(s == 0 for s in self.board[self.p2_pits_index[0]:self.p2_pits_index[1] + 1])
-        
-        # Only checking condition (for AI search)
         if check_only:
             return empty1 or empty2
 
